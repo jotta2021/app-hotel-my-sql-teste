@@ -10,7 +10,7 @@ export default function Initial() {
       <StatusBar styles="auto" />
       <View style={styles.containlogo}>
         <Animatable.Image
-          animation="flipInY"
+          animation="bounceIn"
           source={require('../../localizacao.png')}
           style={{ width: '55%', resizeMode: 'contain' }}
         />

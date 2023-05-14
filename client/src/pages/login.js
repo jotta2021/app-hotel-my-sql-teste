@@ -7,26 +7,49 @@ import {
   TextInput,
   ScrollView,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 
 import * as Animatable from 'react-native-animatable'
 import { useState } from 'react'
 import { AntDesign } from 'react-native-vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import axios, { Axios } from 'axios'
 
 export default function Register() {
   const Navigator = useNavigation()
 
-  const [user, setUser] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  function Autentication() {
-    if ((email !== '') & (senha !== '')) {
-      Navigator.navigate('home')
-    } else {
-      alert('preencha os campos vazios')
-    }
-  }
+
+
+async function Autentication(){
+if (email == '' | password==''){
+  Alert.alert("preencha os campos vazios")
+  exit(0)
+}
+
+
+ axios.post("http://192.168.3.45:33066/login",{
+  email:email,
+  password:password
+  })
+  .then(()=>{
+
+console.log("login realizado")
+ Navigator.navigate("home")
+  })
+  .catch((error)=>{
+console.log(error.response.data)
+Alert.alert(error.response.data)
+
+  })
+  
+}
+  
+
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContain}>
@@ -42,23 +65,23 @@ export default function Register() {
         <View style={styles.spaceTextInput}>
           <TextInput
             style={styles.textInput}
-            value={user}
-            onChange={setUser}
+            value={email}
+            onChangeText={setEmail}
             placeholder="Email"
-            keyboardType="email-address"
+            
           />
           <TextInput
             style={styles.textInput}
             value={password}
-            onChange={setPassword}
+            onChangeText={setPassword}
             secureTextEntry={true}
             placeholder="Senha"
-            keyboardType="text"
+          
           />
-          <TouchableOpacity>
-            <View on style={styles.button}>
+          <TouchableOpacity onPress={()=> Autentication()}>
+            <View style={styles.button}>
               <Text
-                onPress={Autentication}
+                
                 style={{
                   color: 'white',
                   fontSize: 20,
@@ -69,7 +92,9 @@ export default function Register() {
               >
                 Entrar
               </Text>
+
             </View>
+            
           </TouchableOpacity>
 
           <View>
@@ -129,6 +154,7 @@ export default function Register() {
           </View>
         </View>
       </Animatable.View>
+     
     </View>
   )
 }
